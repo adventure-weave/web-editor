@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+        "outDir": "./build",
+		"suppressExcessPropertyErrors": true,
+		"target": "es5",
+		"sourceMap": true,
+		"skipLibCheck": true,
+        "jsx": "react",
+        "watch": true
+	},
+	"exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+		"webpack.config.js",
+		"./dist"
+    ]
+}
