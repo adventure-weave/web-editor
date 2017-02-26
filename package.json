@@ -1,6 +1,6 @@
 {
   "name": "node-diagrams",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Node diagram experiments",
   "main": "dist/index.js",
   "author": "Michał Woźniczak",
@@ -8,7 +8,7 @@
   "dependencies": {
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "storm-react-diagrams": "^2.1.6"
+    "storm-react-diagrams": "^2.3.0"
   },
   "devDependencies": {
     "@types/react": "^15.0.11",

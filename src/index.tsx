@@ -3,27 +3,24 @@ import * as ReactDOM from 'react-dom'
 
 import * as SRD from 'storm-react-diagrams'
 
-import {StoryNodeModel} from './models/node_models'
-import {StoryNodeFactory} from './factories/view_factories'
+import {SceneNodeModel} from './models'
+import {SceneNodeFactory} from './factories'
+
 
 window.onload = () => {
     var engine = new SRD.DiagramEngine()
-    engine.registerNodeFactory(new SRD.DefaultNodeFactory())
-    engine.registerNodeFactory(StoryNodeFactory)
+    // engine.registerNodeFactory(new SRD.DefaultNodeFactory())
+    engine.registerNodeFactory( new SceneNodeFactory())
     engine.registerLinkFactory(new SRD.DefaultLinkFactory())
 
     var model = engine.getDiagramModel()
     console.log(model)
     
-    var node = new StoryNodeModel()
-    node.extras = {
-        name: 'butts, lol',
-        outPorts: ['out.1']
-    }
+    var node = new SceneNodeModel('Scene one!')
     node.x = 100;
     node.y = 120;
 
-    var port = node.addPort(new SRD.PortModel('out.1'))
+    // var port = node.addPort(new SRD.PortModel('out.1'))
 
     model.addNode(node)
 
