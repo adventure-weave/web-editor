@@ -1,5 +1,3 @@
-import {Converter} from 'showdown'
+import {markdown} from 'markdown'
 
-var sd_converter = new Converter()
-
-export var markdown_previewer = sd_converter.makeHtml
+export var markdown_previewer = markdown.toHTML
