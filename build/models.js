@@ -8,11 +8,10 @@ var storm_react_diagrams_1 = require("storm-react-diagrams");
 var _ = require("lodash");
 var SceneNodeModel = (function (_super) {
     __extends(SceneNodeModel, _super);
-    function SceneNodeModel(name, color, content) {
+    function SceneNodeModel(name, content) {
         if (name === void 0) { name = 'Scene title'; }
-        if (color === void 0) { color = 'rgb(0,192,255)'; }
-        var _this = _super.call(this, name, color) || this;
-        _this.nodeType = 'story';
+        var _this = _super.call(this, 'story') || this;
+        _this.name = name;
         if (content === undefined) {
             _this.content = "Placeholder content for **" + _this.name + "**";
         }
@@ -21,13 +20,27 @@ var SceneNodeModel = (function (_super) {
     SceneNodeModel.prototype.deSerialize = function (object) {
         _super.prototype.deSerialize.call(this, object);
         this.content = object.content;
+        this.name = object.name;
     };
     SceneNodeModel.prototype.serialize = function () {
         return _.merge(_super.prototype.serialize.call(this), {
-            content: this.content
+            content: this.content,
+            name: this.name
         });
     };
     return SceneNodeModel;
-}(storm_react_diagrams_1.DefaultNodeModel));
+}(storm_react_diagrams_1.NodeModel));
 exports.SceneNodeModel = SceneNodeModel;
+var ChoicePortModel = (function (_super) {
+    __extends(ChoicePortModel, _super);
+    function ChoicePortModel(idx, name) {
+        if (idx === void 0) { idx = 0; }
+        var _this = this;
+        name = name || "Choice #" + idx + " placeholder";
+        _this = _super.call(this, name) || this;
+        return _this;
+    }
+    return ChoicePortModel;
+}(storm_react_diagrams_1.PortModel));
+exports.ChoicePortModel = ChoicePortModel;
 //# sourceMappingURL=models.js.map

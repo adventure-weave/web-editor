@@ -2,12 +2,17 @@ import {
     DefaultNodeWidget,
     DefaultNodeState,
     DefaultPortLabel,
-    DiagramEngine
+    DefaultPortLabelState,
+    DiagramEngine,
+    PortWidget
 } from 'storm-react-diagrams'
 import * as _ from 'lodash'
 import * as React from 'react'
 
-import {SceneNodeModel} from './models'
+import {
+    SceneNodeModel,
+    ChoicePortModel
+} from './models'
 import {markdown_previewer} from './content_previewers'
 
 var div = React.DOM.div,
@@ -23,6 +28,10 @@ export interface SceneNodeProps {
 export interface SceneNodeState {
     beingEdited: boolean,
     content: string
+}
+
+export interface BasicChoiceLabelProps {
+    model: ChoicePortModel
 }
 
 export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeState> {
@@ -59,7 +68,6 @@ export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeSt
 
     render() {
         let node = this.props.node
-        console.log('wololo')
         
         return (
             div({className: 'basic-node story-node', style: {background: node.color }},
@@ -77,17 +85,39 @@ export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeSt
                 !this.state.beingEdited || textarea({value: this.state.content, onChange: this.editContent}),
                 div({className:'title'},
                     span({className: 'name'}, 'Choices:'),
-                    span({className: 'btn btn-default btn-sm glyphicon glyphicon-plus'})
+                    span({
+                        className: 'btn btn-default btn-sm glyphicon glyphicon-plus',
+                        onClick: () => this.props.node.addPort(new ChoicePortModel(Object.keys(node.ports).length))
+                    })
                 ),
                 div({className:'ports'},
-                    div({className: 'in'}, _.map(node.getInPorts(),(port) => {
-                        return React.createElement(DefaultPortLabel,{model: port});
-                    })),
-                    div({className: 'out'}, _.map(node.getOutPorts(),(port) => {
-                        return React.createElement(DefaultPortLabel,{model: port});
+                    div({className: 'out'}, _.map(node.ports, (port) => {
+                        return React.createElement(ChoicePortWidget, {model: port});
                     })),
                 )
             )
         );
     }
+}
+
+export class ChoicePortWidget extends React.Component<BasicChoiceLabelProps, DefaultPortLabelState> {
+
+	public static defaultProps: BasicChoiceLabelProps = {
+        model: null
+	};
+
+	render() {
+		var model = this.props.model
+		var port = React.createElement(PortWidget, {name: model.name, node: model.getParent()})
+		var label = React.DOM.div({className: 'name'}, model.name)
+		
+		return React.DOM.div({className: 'out-port'},
+            span({
+                className: 'btn btn-default btn-sm glyphicon glyphicon-minus',
+                onClick: () => model.parentNode.removePort(model)
+            }),
+            label,
+			port,
+		);
+	}
 }
