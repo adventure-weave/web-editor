@@ -11,7 +11,7 @@ export class SceneNodeModel extends DefaultNodeModel {
         super(name, color);
         this.nodeType = 'story'
         if (content === undefined) {
-            this.content = `[Placeholder content for ${this.name}]`
+            this.content = `Placeholder content for **${this.name}**`
         }
     }
 

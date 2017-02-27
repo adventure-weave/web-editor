@@ -14,7 +14,7 @@ var SceneNodeModel = (function (_super) {
         var _this = _super.call(this, name, color) || this;
         _this.nodeType = 'story';
         if (content === undefined) {
-            _this.content = "[Placeholder content for " + _this.name + "]";
+            _this.content = "Placeholder content for **" + _this.name + "**";
         }
         return _this;
     }
