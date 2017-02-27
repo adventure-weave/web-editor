@@ -9,7 +9,7 @@
     "markdown": "^0.5.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "storm-react-diagrams": "^2.3.0"
+    "storm-react-diagrams": "^2.3.1"
   },
   "devDependencies": {
     "@types/react": "^15.0.11",
