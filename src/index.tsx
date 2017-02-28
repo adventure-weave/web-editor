@@ -6,16 +6,29 @@ import * as SRD from 'storm-react-diagrams'
 import {SceneNodeModel} from './models'
 import {SceneNodeFactory} from './factories'
 
+class ParentWrapper extends React.Component<any, any>{
+
+    constructor(props){
+        super(props);
+        props.engine.registerNodeFactory( new SceneNodeFactory('story',() => {
+            this.forceUpdate();
+        }))
+        props.engine.registerLinkFactory(new SRD.DefaultLinkFactory())
+    }
+
+    render(){
+        return <SRD.DiagramWidget diagramEngine={this.props.engine} />;
+    }
+}
 
 window.onload = () => {
+    //this will trigger a repaint
     var engine = new SRD.DiagramEngine()
-    // engine.registerNodeFactory(new SRD.DefaultNodeFactory())
-    engine.registerNodeFactory( new SceneNodeFactory())
-    engine.registerLinkFactory(new SRD.DefaultLinkFactory())
+
 
     var model = engine.getDiagramModel()
     console.log(model)
-    
+
     var node = new SceneNodeModel('Scene one!')
     node.x = 100;
     node.y = 120;
@@ -24,5 +37,6 @@ window.onload = () => {
 
     model.addNode(node)
 
-    ReactDOM.render(<SRD.DiagramWidget diagramEngine={engine} />, document.getElementById('app_container'))
+
+    ReactDOM.render(React.createElement(ParentWrapper,{engine: engine}), document.getElementById('app_container'))
 }

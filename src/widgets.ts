@@ -22,7 +22,8 @@ var div = React.DOM.div,
 
 export interface SceneNodeProps {
     node: SceneNodeModel,
-    diagramEngine: DiagramEngine
+    diagramEngine: DiagramEngine,
+    updateCanvas: () => any
 }
 
 export interface SceneNodeState {
@@ -31,14 +32,16 @@ export interface SceneNodeState {
 }
 
 export interface BasicChoiceLabelProps {
-    model: ChoicePortModel
+    model: ChoicePortModel,
+    updateCanvas: () => any
 }
 
 export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeState> {
 
     public static defaultProps: SceneNodeProps = {
         node: null,
-        diagramEngine: null
+        diagramEngine: null,
+        updateCanvas: () => {}
     };
 
     public static defaultState: SceneNodeState = {
@@ -68,7 +71,7 @@ export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeSt
 
     render() {
         let node = this.props.node
-        
+
         return (
             div({className: 'basic-node story-node', style: {background: node.color }},
                 div({className:'title'},
@@ -77,7 +80,10 @@ export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeSt
                         className: 'btn btn-default btn-sm glyphicon glyphicon-pencil' + (this.state.beingEdited ? ' active' : ''),
                         onClick: this.toggleEdit
                     }),
-                    span({className: 'btn btn-default btn-sm glyphicon glyphicon-remove-sign', onClick: node.remove}),
+                    span({className: 'btn btn-default btn-sm glyphicon glyphicon-remove-sign', onClick: () => {
+                        node.remove();
+                        //this.props.updateCanvas();
+                    }}),
                 ),
                 div({className: 'content-bar'},
                 ),
@@ -87,12 +93,15 @@ export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeSt
                     span({className: 'name'}, 'Choices:'),
                     span({
                         className: 'btn btn-default btn-sm glyphicon glyphicon-plus',
-                        onClick: () => this.props.node.addPort(new ChoicePortModel(Object.keys(node.ports).length))
+                        onClick: () => {
+                            this.props.node.addPort(new ChoicePortModel(Object.keys(node.ports).length));
+                            this.props.updateCanvas();
+                        }
                     })
                 ),
                 div({className:'ports'},
                     div({className: 'out'}, _.map(node.ports, (port) => {
-                        return React.createElement(ChoicePortWidget, {model: port});
+                        return React.createElement(ChoicePortWidget, {model: port,updateCanvas: this.props.updateCanvas});
                     })),
                 )
             )
@@ -103,18 +112,22 @@ export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeSt
 export class ChoicePortWidget extends React.Component<BasicChoiceLabelProps, DefaultPortLabelState> {
 
 	public static defaultProps: BasicChoiceLabelProps = {
-        model: null
+        model: null,
+        updateCanvas: () => {}
 	};
 
 	render() {
 		var model = this.props.model
 		var port = React.createElement(PortWidget, {name: model.name, node: model.getParent()})
 		var label = React.DOM.div({className: 'name'}, model.name)
-		
+
 		return React.DOM.div({className: 'out-port'},
             span({
                 className: 'btn btn-default btn-sm glyphicon glyphicon-minus',
-                onClick: () => model.parentNode.removePort(model)
+                onClick: () => {
+                    model.parentNode.removePort(model);
+                    this.props.updateCanvas();
+                }
             }),
             label,
 			port,
