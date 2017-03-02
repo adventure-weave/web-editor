@@ -8,9 +8,9 @@ import {SceneNodeFactory} from './factories'
 
 class ParentWrapper extends React.Component<any, any>{
 
-    constructor(props){
+    constructor(props) {
         super(props);
-        props.engine.registerNodeFactory( new SceneNodeFactory('story',() => {
+        props.engine.registerNodeFactory(new SceneNodeFactory('story', () => {
             this.forceUpdate();
         }))
         props.engine.registerLinkFactory(new SRD.DefaultLinkFactory())
