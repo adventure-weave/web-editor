@@ -32,6 +32,9 @@ window.onload = () => {
     node.x = 100;
     node.y = 120;
 
+    var inport = new SRD.PortModel('In')
+    node.addPort(inport)
+
     model.addNode(node)
 
     console.log('nodemodel:', node.constructor.name)

@@ -16,8 +16,6 @@ export class SceneNodeModel extends NodeModel {
         super('story')
         this.name = name
         this.choices = {}
-        
-        this.addPort(new PortModel('In'))
 
         if (content === undefined) {
             this.content = `Placeholder content for **${this.name}**`
