@@ -19,7 +19,6 @@ var SceneNodeModel = (function (_super) {
         var _this = _super.call(this, 'story') || this;
         _this.name = name;
         _this.choices = {};
-        _this.addPort(new storm_react_diagrams_1.PortModel('In'));
         if (content === undefined) {
             _this.content = "Placeholder content for **" + _this.name + "**";
         }

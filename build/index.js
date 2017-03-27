@@ -37,6 +37,7 @@ window.onload = function () {
     var node = new models_1.SceneNodeModel('Scene one!');
     node.x = 100;
     node.y = 120;
+    node.addPort(new SRD.PortModel('In'));
     model.addNode(node);
     console.log('nodemodel:', node.constructor.name);
     ReactDOM.render((React.createElement("div", { className: "container-fluid" },
