@@ -41,11 +41,10 @@ var SceneNodeWidget = (function (_super) {
         this.props.updateCanvas();
     };
     SceneNodeWidget.prototype.render = function () {
-        console.log('inport is:', this.props.node.inPort);
         return (React.createElement("div", { className: 'basic-node story-node' },
             React.createElement(this.header, { beingEdited: this.state.beingEdited, onToggleEdit: this.toggleEdit, node: this.props.node }),
             React.createElement(this.contentArea, { node: this.props.node, beingEdited: this.state.beingEdited, onChange: this.editContent }),
-            React.createElement(this.portArea, { inPort: this.props.node.inPort, outPorts: this.props.node.ports, node: this.props.node, onClickAdd: this.addPort, updateCanvas: this.props.updateCanvas })));
+            React.createElement(this.portArea, { inPort: this.props.node.inPort, outPorts: this.props.node.choices, node: this.props.node, onClickAdd: this.addPort, updateCanvas: this.props.updateCanvas })));
     };
     return SceneNodeWidget;
 }(React.Component));

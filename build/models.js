@@ -18,13 +18,30 @@ var SceneNodeModel = (function (_super) {
         if (name === void 0) { name = 'Scene title'; }
         var _this = _super.call(this, 'story') || this;
         _this.name = name;
-        _this.inPort = new storm_react_diagrams_1.PortModel('In');
-        _this.inPort.setParentNode(_this);
+        _this.choices = {};
+        _this.addPort(new storm_react_diagrams_1.PortModel('In'));
         if (content === undefined) {
             _this.content = "Placeholder content for **" + _this.name + "**";
         }
         return _this;
     }
+    SceneNodeModel.prototype.addPort = function (port) {
+        port = _super.prototype.addPort.call(this, port);
+        if (port instanceof ChoicePortModel) {
+            this.choices[port.name] = port;
+        }
+        else {
+            this.inPort = port;
+        }
+        console.log('choiceset:', this.choices);
+        return port;
+    };
+    SceneNodeModel.prototype.removePort = function (port) {
+        if (port instanceof ChoicePortModel) {
+            delete this.choices[port.name];
+        }
+        _super.prototype.removePort.call(this, port);
+    };
     SceneNodeModel.prototype.deSerialize = function (object) {
         _super.prototype.deSerialize.call(this, object);
         this.content = object.content;
