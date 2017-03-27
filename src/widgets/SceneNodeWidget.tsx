@@ -58,12 +58,11 @@ export class SceneNodeWidget extends React.Component<SceneNodeProps, SceneNodeSt
     }
 
     render() {
-        console.log('inport is:', this.props.node.inPort)
         return (
         <div className='basic-node story-node'>
             <this.header beingEdited={this.state.beingEdited} onToggleEdit={this.toggleEdit} node={this.props.node} />
             <this.contentArea node={this.props.node} beingEdited={this.state.beingEdited} onChange={this.editContent} />
-            <this.portArea inPort={this.props.node.inPort} outPorts={this.props.node.ports}
+            <this.portArea inPort={this.props.node.inPort} outPorts={this.props.node.choices}
             node={this.props.node}
             onClickAdd={this.addPort}
             updateCanvas={this.props.updateCanvas} />

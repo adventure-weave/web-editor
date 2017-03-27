@@ -8,28 +8,48 @@ export class SceneNodeModel extends NodeModel {
     
     content: any
     inPort: PortModel
-    ports: {[s: string]: ChoicePortModel}
+    choices: {[s: string]: ChoicePortModel}
     name: string
 
     
     constructor(name: string = 'Scene title', content?: any) {
         super('story')
         this.name = name
-        this.inPort = new PortModel('In')
-        this.inPort.setParentNode(this)
+        this.choices = {}
+        
+        this.addPort(new PortModel('In'))
+
         if (content === undefined) {
             this.content = `Placeholder content for **${this.name}**`
         }
     }
 
-    deSerialize(object){
+    addPort(port: PortModel) {
+        port = super.addPort(port)
+        if (port instanceof ChoicePortModel) {
+            this.choices[port.name] = port
+        } else {
+            this.inPort = port
+        }
+        console.log('choiceset:', this.choices)
+        return port
+    }
+
+    removePort(port: PortModel) {
+        if (port instanceof ChoicePortModel) {
+            delete this.choices[port.name]
+        }
+        super.removePort(port)
+    }
+
+    deSerialize(object) {
 		super.deSerialize(object)
 		this.content = object.content
         this.name = object.name
         this.inPort = this.inPort.deSerialize()
 	}
 	
-	serialize(){
+	serialize() {
 		return _.merge(super.serialize(), {
 			content: this.content,
             name: this.name,
